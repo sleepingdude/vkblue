@@ -39,7 +39,7 @@ class Config extends PureComponent {
                         </a>
                         <a
                             styleName="animated-button victoria-two"
-                            href="https://vk.com/blue_player?w=app6887721_-130956055"
+                            href="https://vk.ru/blue_player?w=app6887721_-130956055"
                             target="_blank"
                             onClick={closeLightBox}
                         >
@@ -47,7 +47,7 @@ class Config extends PureComponent {
                         </a>
                         <a
                             styleName="animated-button victoria-two"
-                            href="https://vk.com/blue_player?w=wall-130956055_683#"
+                            href="https://vk.ru/blue_player?w=wall-130956055_683#"
                             target="_blank"
                             onClick={closeLightBox}
                         >

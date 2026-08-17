@@ -7,7 +7,7 @@ const Component = function() {
         <div styleName="wrapper">
             <span>
                 Мы уже работаем над обновлением.{' '}
-                <a href="https://vk.com/blue_player" target="_blank">
+                <a href="https://vk.ru/blue_player" target="_blank">
                     Новости тут
                 </a>
             </span>

@@ -78,6 +78,7 @@
     color: #aaa;
   }
   .effects-wrapper {
+    pointer-events: none;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -91,6 +92,7 @@
     padding: 0px 0 0;
 
     &.opened {
+      pointer-events: all;
       background-color: var(--vkui--color_background_content, white);
       overflow: auto;
       top: 0;
@@ -102,6 +104,7 @@
       }
     }
     > span {
+      pointer-events: all;
       position: relative;
       top: 0px;
       left: 0;

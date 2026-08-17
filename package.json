@@ -115,7 +115,10 @@
     "prod:chrome": "cross-env NODE_ENV=production BROWSER=chrome webpack --config webpack.prod.config.js && npm run compress:chrome",
     "dev:chrome": "cross-env NODE_ENV=development BROWSER=chrome webpack --watch --config webpack.dev.config.js --progress",
     "build:all": "npm run prod:chrome && npm run prod:firefox",
-    "prettier-format": "prettier --list-different --write \"source/**/*.{js,json,css}\""
+    "prettier-format": "prettier --list-different --write \"source/**/*.{js,json,css}\"",
+    "pack:chrome": "node pack.js chrome",
+    "pack:firefox": "node pack.js firefox",
+    "pack:all": "npm run pack:chrome && npm run pack:firefox"
   },
   "author": "hadaev.ivan@gmail.com"
 }

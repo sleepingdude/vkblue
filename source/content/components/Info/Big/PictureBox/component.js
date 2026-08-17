@@ -52,12 +52,16 @@ class PictureBox extends Component {
         this.timeout = setTimeout(this.switchGears, 5000);
     }
 
+    componentWillUnmount() {
+        clearTimeout(this.timeout);
+    }
+
     render() {
         const { switchGears } = this;
         const { artistPicture, albumPicture } = this.props;
         const { first, last } = this.state;
 
-        if (artistPicture === undefined && albumPicture === undefined) {
+        if (artistPicture === undefined && albumPicture === undefined ) {
             return (
                 <div styleName="wrapper_box">
                     <Loader />

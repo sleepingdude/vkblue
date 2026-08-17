@@ -7,6 +7,6 @@ function injectScript(file) {
 }
 
 
-if (window.location.hostname.endsWith('vk.com')) {
+if (['vk.com','vk.ru'].some(item=>window.location.hostname.endsWith(item)) ) {
     injectScript('page.js'); 
 }

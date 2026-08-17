@@ -3,7 +3,7 @@
         "message": "VK Blue - Эквалайзер и Скробблер для ВК"
     },
     "extDescription": {
-        "message": "Расширение стандартного плеера ВК (vk.com). Эквалайзер, Last.fm, управление медиа клавишами, биография исполнителя и слова."
+        "message": "Расширение стандартного плеера ВК (vk.ru). Эквалайзер, Last.fm, управление медиа клавишами, биография исполнителя и слова."
     },
     "extDefaultTitle": {
         "message": "VK Blue - Эквалайзер и Скробблер для ВК"
@@ -13,7 +13,7 @@
         "description": "Имя разработчика"
     },
     "creator_code_link": {
-        "message": "https://vk.com/hadaev_ivan",
+        "message": "https://vk.ru/hadaev_ivan",
         "description": "Ссылка на профиль разработчика"
     },
     "creator_design_name": {
@@ -21,7 +21,7 @@
         "description": "Имя разработчика"
     },
     "creator_design_link": {
-        "message": "https://vk.com/timothyk",
+        "message": "https://vk.ru/timothyk",
         "description": "Ссылка на профиль разработчика"
     },
     "creator_media_name": {
@@ -29,7 +29,7 @@
         "description": "Имя дизайнера"
     },
     "creator_media_link": {
-        "message": "https://vk.com/id30587638",
+        "message": "https://vk.ru/id30587638",
         "description": "Ссылка на профиль дизайнера"
     },
     "elements_design_name": {
@@ -37,7 +37,7 @@
         "description": "Имя дизайнера"
     },
     "elements_design_link": {
-        "message": "https://vk.com/id17100076",
+        "message": "https://vk.ru/id17100076",
         "description": "Ссылка на профиль дизайнера"
     }
 }

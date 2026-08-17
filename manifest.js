@@ -12,6 +12,8 @@ const hostPermissions = [
     //vk
     '*://vk.com/*',
     '*://m.vk.com/*',
+    '*://vk.ru/*',
+    '*://m.vk.ru/*',
     //lyrics
     '*://www.megalyrics.ru/*',
     '*://megalyrics.ru/*',
@@ -21,6 +23,7 @@ const hostPermissions = [
     //api
     '*://ws.audioscrobbler.com/*',
     '*://www.last.fm/*',
+    '*://lastfm.freetls.fastly.net/*',
     '*://searx.space/*',
     '*://web.archive.org/*',
     //search
@@ -108,11 +111,11 @@ const manifest = Object.assign({
     name: '__MSG_extName__',
     short_name: 'VK Blue',
     description: '__MSG_extDescription__',
-    version: '0.7.4',
-    version_name: '0.7.4',
+    version: '0.7.7',
+    version_name: '0.7.7',
     author: 'hadaev.ivan@gmail.com',
     default_locale: 'ru',
-    homepage_url: 'https://vk.com/blue_player',
+    homepage_url: 'https://vk.ru/blue_player',
     icons: {
         '128': 'icon-128.png',
     },
@@ -128,7 +131,7 @@ const manifest = Object.assign({
     content_scripts: [
         {
             run_at: 'document_start',
-            matches: ['*://vk.com/*'],
+            matches: ['*://vk.com/*', '*://vk.ru/*'],
             css: ['content.css'],
             js: ['inject.js', 'content.js'],
         },

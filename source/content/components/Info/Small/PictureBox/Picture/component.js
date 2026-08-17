@@ -15,7 +15,12 @@ class Picture extends Component {
     }
 
     componentDidMount() {
+        this._isMounted = true;
         this.updatePicture(this.props.picture);
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     componentDidUpdate(prevProps) {
@@ -64,7 +69,7 @@ class Picture extends Component {
     render() {
         const { error, picture } = this.state;
 
-        if (picture === undefined) {
+        if (picture === undefined || !picture?.startsWith('blob:')) {
             return (
                 <div styleName="wrapper_picture">
                     <Loader />

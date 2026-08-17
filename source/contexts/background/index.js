@@ -14,12 +14,15 @@ import { storageClear } from '../../modules/LocalStorage/storage';
     await import('./analytics');
 
     (browser.browserAction || browser.action).onClicked.addListener(() => {
-        browser.tabs.create({ url: 'https://vk.com/audios0000' });
+        browser.tabs.create({ url: 'https://vk.ru/audios0000' });
     });
 
     chrome.runtime.onInstalled.addListener((details) => {
         if (details.reason === 'update') {
-            chrome.tabs.query({ url: '*://vk.com/*' }, (tabs) => {
+            chrome.tabs.query({ url: [
+                '*://vk.com/*',
+                '*://vk.ru/*'
+            ] }, (tabs) => {
                 for (const tab of tabs) {
                     if (tab.id != null) chrome.tabs.reload(tab.id);
                 }
@@ -29,7 +32,7 @@ import { storageClear } from '../../modules/LocalStorage/storage';
 
     browser.runtime.onInstalled.addListener(function ({ reason, previousVersion }) {
         if (reason === 'install') {
-            browser.tabs.create({ url: 'https://vk.com/audios0000' });
+            browser.tabs.create({ url: 'https://vk.ru/audios0000' });
             console.log('Blue. Extension installed. Storage cleared.');
         }
 

@@ -6,7 +6,7 @@ import { REQUEST_DONATS } from './utils';
 browser.runtime.onMessage.addListener(async (message, sender) => {
     if (message.type === REQUEST_DONATS) {
         try {
-            const res = await fetch('https://m.vk.com/blue_player');
+            const res = await fetch('https://m.vk.ru/blue_player');
             const body = await res.text();
 
             const $ = cheerio.load(body);

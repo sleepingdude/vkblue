@@ -53,6 +53,10 @@ class PictureBox extends Component {
         this.timeout = setTimeout(this.switchGears, 5000);
     }
 
+    componentWillUnmount() {
+        clearTimeout(this.timeout);
+    }
+
     render() {
         const { switchGears } = this;
         const { artistPicture, albumPicture, extended } = this.props;

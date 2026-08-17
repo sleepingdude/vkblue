@@ -38,7 +38,7 @@ class GetPro extends PureComponent {
                         <a
                             onClick={onClose}
                             dangerouslySetInnerHTML={{
-                                __html: `<div onclick="window.location.replace('https://vk.com/blue_player')">Перейти в группу!</div>`,
+                                __html: `<div onclick="window.location.replace('https://vk.ru/blue_player')">Перейти в группу!</div>`,
                             }}
                         />
                     </div>

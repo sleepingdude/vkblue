@@ -66,7 +66,7 @@ export function setVkTooltip(options) {
             }
 
             if (!siblingElement) {
-                error('siblingElement is required for fromSibling branch');
+                log('siblingElement is required for fromSibling branch');
                 try { injectedStyle.remove(); } catch (e) { }
                 ctx._vkProcessing = false;
                 return;

@@ -7,55 +7,55 @@ export var regExpPatterns = (() => {
   const sentenceGarbage = /(?!(?<=\p{L})['’"`\-–](?=\p{L}))[^\p{L}\d&.,Λ ]/gum;
   const extraSpaces = /(\s)+/g;
 
-  return {bracketsContent, sentenceDashes, sentenceQuotationMarks, sentenceGarbage, extraSpaces};
+  return { bracketsContent, sentenceDashes, sentenceQuotationMarks, sentenceGarbage, extraSpaces };
 })();
 
 export function waitForElement(selector, context, options) {
-    context = context || document;
-    const { timeout, waitForMissing} = options || {};
-    let timer;
-    let observer;
-    return new Promise((resolve, reject) => {
-  
-      let handleElement = () => {
-        let condition = context?.querySelector(selector);
-        if (waitForMissing ? !condition : condition) {
-            resolve(waitForMissing ? true : condition || null);
-            if (observer) observer.disconnect();
-        }
+  context = context || document;
+  const { timeout, waitForMissing } = options || {};
+  let timer;
+  let observer;
+  return new Promise((resolve, reject) => {
+
+    let handleElement = () => {
+      let condition = context?.querySelector(selector);
+      if (waitForMissing ? !condition : condition) {
+        resolve(waitForMissing ? true : condition || null);
+        if (observer) observer.disconnect();
       }
-  
+    }
+
+    handleElement();
+
+    observer = new MutationObserver(mutations => {
       handleElement();
-  
-      observer = new MutationObserver(mutations => {
-        handleElement();
-      });
-  
-      observer.observe(context, {
-        childList: true,
-        subtree: true
-      });
-  
-      if (timeout) {
-        const handleTimeout = () => {
-          clearTimeout(timer);
-          observer.disconnect();
-          resolve(null);//new Error('Timeout waiting for element')
-        };
-        timer = setTimeout(handleTimeout, timeout);
-      }
     });
+
+    observer.observe(context, {
+      childList: true,
+      subtree: true
+    });
+
+    if (timeout) {
+      const handleTimeout = () => {
+        clearTimeout(timer);
+        observer.disconnect();
+        resolve(null);//new Error('Timeout waiting for element')
+      };
+      timer = setTimeout(handleTimeout, timeout);
+    }
+  });
 }
 
 export function CSSToObject(cssText) {
-    var regex = /([\w-]*)\s*:\s*([^;]*)/g;
-    var match, properties = {};
-    while (match = regex.exec(cssText)) properties[match[1]] = match[2].trim();
-    return properties;
+  var regex = /([\w-]*)\s*:\s*([^;]*)/g;
+  var match, properties = {};
+  while (match = regex.exec(cssText)) properties[match[1]] = match[2].trim();
+  return properties;
 }
 
 export function objectToCSS(style) {
-    return Object.entries(style).map(([k, v]) => `${k}:${v}`).join(';')
+  return Object.entries(style).map(([k, v]) => `${k}:${v}`).join(';')
 }
 
 
@@ -256,98 +256,98 @@ export function sortArrayOfObjects(array, rules, sortFunction) {
  * @returns {string}
  */
 export function stringifyCustom(obj, formatters = {}, space) {
-    space = space == undefined ? 2 : space;
-    function get(obj, key) {
-        return obj[key];
+  space = space == undefined ? 2 : space;
+  function get(obj, key) {
+    return obj[key];
+  }
+
+  function createMarker(id) {
+    return `__FORMATTER_${id}__`;
+  }
+
+  const formatterEntries = Object.entries(formatters)
+    .sort((a, b) =>
+      b[0].split('.').length -
+      a[0].split('.').length
+    );
+
+  const markers = new Map();
+
+  let markerId = 0;
+
+  function cloneWithMarkers(current, currentPath = '') {
+
+    if (Array.isArray(current)) {
+      return current.map((item, index) =>
+        cloneWithMarkers(
+          item,
+          currentPath
+            ? `${currentPath}.${index}`
+            : `${index}`
+        )
+      );
     }
 
-    function createMarker(id) {
-        return `__FORMATTER_${id}__`;
-    }
+    if (
+      current &&
+      typeof current === 'object'
+    ) {
 
-    const formatterEntries = Object.entries(formatters)
-        .sort((a, b) =>
-            b[0].split('.').length -
-            a[0].split('.').length
+      const result = {};
+
+      for (const key of Object.keys(current)) {
+
+        const fullPath = currentPath
+          ? `${currentPath}.${key}`
+          : key;
+
+        const formatterEntry = formatterEntries.find(
+          ([path]) => path === fullPath
         );
 
-    const markers = new Map();
+        if (formatterEntry) {
 
-    let markerId = 0;
+          /** @type {Function} */
+          const formatterFn = formatterEntry?.[1];
 
-    function cloneWithMarkers(current, currentPath = '') {
+          const marker = createMarker(markerId++);
 
-        if (Array.isArray(current)) {
-            return current.map((item, index) =>
-                cloneWithMarkers(
-                    item,
-                    currentPath
-                        ? `${currentPath}.${index}`
-                        : `${index}`
-                )
-            );
+          markers.set(
+            marker,
+            formatterFn?.['call'](this,
+              get(obj, fullPath),
+              fullPath,
+              obj
+            )
+          );
+
+          result[key] = marker;
+
+        } else {
+          result[key] = cloneWithMarkers(
+            current[key],
+            fullPath
+          );
         }
+      }
 
-        if (
-            current &&
-            typeof current === 'object'
-        ) {
-
-            const result = {};
-
-            for (const key of Object.keys(current)) {
-
-                const fullPath = currentPath
-                    ? `${currentPath}.${key}`
-                    : key;
-
-                const formatterEntry = formatterEntries.find(
-                    ([path]) => path === fullPath
-                );
-
-                if (formatterEntry) {
-
-                    /** @type {Function} */
-                    const formatterFn = formatterEntry?.[1];
-
-                    const marker = createMarker(markerId++);
-
-                    markers.set(
-                        marker,
-                        formatterFn?.['call'](this,
-                            get(obj, fullPath),
-                            fullPath,
-                            obj
-                        )
-                    );
-
-                    result[key] = marker;
-
-                } else {
-                    result[key] = cloneWithMarkers(
-                        current[key],
-                        fullPath
-                    );
-                }
-            }
-
-            return result;
-        }
-
-        return current;
+      return result;
     }
 
-    const prepared = cloneWithMarkers(obj);
+    return current;
+  }
 
-    return JSON.stringify(prepared, null, space)
-        .replace(
-            /"__FORMATTER_\d+__"/g,
-            (match) => {
-                const marker = match.slice(1, -1);
+  const prepared = cloneWithMarkers(obj);
 
-                return markers.get(marker);
-            }
-        );
+  return JSON.stringify(prepared, null, space)
+    .replace(
+      /"__FORMATTER_\d+__"/g,
+      (match) => {
+        const marker = match.slice(1, -1);
+
+        return markers.get(marker);
+      }
+    );
 }
 
 /**
@@ -381,7 +381,7 @@ export function matchURLPatterns(url, urlPatterns) {
  */
 export function parseURL(str) {
   const parseUrl = /^(?<href>(?:(?<scheme>(?:view-source|blob):))?(?<protocol>(?:http|https|ftp|ftps|file|urn|chrome|browser|chrome-extension|moz-extension|chrome-error|devtools|view-source|about|javascript|data|postgres|mysql|ws|wss|[A-Za-z][A-Za-z0-9+.\-]*)(?<!localhost\b):(?=[^\s]+))(?:(?:(?:\/\/)?(?<auth>(?<username>(?:[A-Za-z0-9._~!$&'()*+,;=\-]|%[0-9A-Fa-f]{2})*)(?::(?<password>(?:[A-Za-z0-9._~!$&'()*+,;=:\-]|%[0-9A-Fa-f]{2})*))?@)?(?<host>(?<hostname>(?<=\/\/|@)(?:(?<ip>\d{1,3}(?:\.\d{1,3}){3}(?![.\d]))|(?![\p{N}.]{1,3}\.)(?:(?:(?<subdomains>(?:[\p{L}\p{N}\p{S}][\p{L}\p{N}\p{S}\p{M}\-]*[\p{L}\p{N}\p{S}\p{M}]?\.)*)?(?<secondLevelDomain>[\p{L}\p{N}\p{S}](?:[\p{L}\p{N}\p{S}\p{M}\-]*[\p{L}\p{N}\p{S}\p{M}])?)\.(?<topLevelDomain>(?=[\p{L}\p{N}\p{S}\p{M}\-]*\p{L})[\p{L}\p{N}\p{S}](?:[\p{L}\p{N}\p{S}\p{M}\-]*[\p{L}\p{N}\p{S}\p{M}])?))|(?:[\p{L}\p{N}\p{S}\p{M}\-]*[\p{L}\p{N}\p{S}\p{M}])))(?=[^\p{L}\p{N}_]|$))?(?::(?<port>\d+))?)?(?<!\/\/\b|@|-|\.)(?<pathname>(?!\/\/|-|\.)(?:\/{0,}[-,\/%_.~+()'"&@:;\p{L}\p{N}\p{S}\p{M}\p{Pc}\p{Pd} ]+)+)?(?:(?<search>\?[:;&\p{L}\d%_.,~+=\-\/ ()]*))?(?:(?<hash>#[\p{L}\d_\-\?&=]*))?)))$/gum;
-  
+
   const regex = parseUrl;
   const match = regex.exec(str);
   if (!match) return null;
@@ -484,4 +484,74 @@ export function toSentenceCase(str) {
  */
 export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+
+/**
+ * Creates a regular expression from a string, escaping special characters.
+ * 
+ * @param {string} value - The string to convert into a regular expression.
+ * @return {RegExp} - The resulting regular expression.
+ * @tags #regex #utility
+ */
+export function getMatchesRegExp(value) {
+  var regStr = value.replace(new RegExp('[\\\\]', 'gim'), '\$&');
+  var regExp = new RegExp(regStr, 'gim');
+  return regExp;
+}
+
+/**
+ * Retrieves a nested value from an object using a dot-separated key path.
+ * Supports wildcard/regular expression matching and non-enumerable properties.
+ *
+ * Examples:
+ *   getNestedValue(obj, "foo.bar");
+ *   getNestedValue(obj, "foo.*__bar", { regExp: true });
+ *   getNestedValue(obj, "foo.*__bar", {
+ *     regExp: true,
+ *     ownPropertyNames: true
+ *   });
+ *
+ * @param {Object} obj
+ * @param {string} key
+ * @param {Object} [options]
+ * @param {boolean} [options.regExp=false] Enable RegExp matching for path segments.
+ * @param {boolean} [options.ownPropertyNames=false] Include non-enumerable properties.
+ * @param {boolean} [options.symbols=false] Include Symbol keys (uses Reflect.ownKeys()).
+ * @returns {any}
+ */
+export function getNestedValue(obj, key, options) {
+  const {
+    regExp = false,
+    ownPropertyNames = false,
+    symbols = false
+  } = options || {};
+
+  return key.split(".").reduce((result, part) => {
+    if (result == null) {
+      return undefined;
+    }
+
+    if (!regExp) {
+      return result[part];
+    }
+
+    const keys = symbols
+      ? Reflect.ownKeys(result)
+      : ownPropertyNames
+        ? Object.getOwnPropertyNames(result)
+        : Object.keys(result);
+
+    const regexp = getMatchesRegExp(
+      part.replace(/\*/g, ".*")
+    );
+
+    const matchedKey = keys.find(k =>
+      typeof k === "string" && regexp.test(k)
+    );
+
+    return matchedKey === undefined
+      ? undefined
+      : result[matchedKey];
+  }, obj);
 }

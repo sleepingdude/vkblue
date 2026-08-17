@@ -1,19 +1,19 @@
 {
     "extName": {
-        "message": "VK Blue - EQ & Scrobbler for VK.com"
+        "message": "VK Blue - EQ & Scrobbler for VK.ru"
     },
     "extDescription": {
-        "message": "Extension to the standard vk.com player functionality. It adds EQ, Last.fm scrobbling, media keys support, artist's bio and lyrics"
+        "message": "Extension to the standard vk.ru player functionality. It adds EQ, Last.fm scrobbling, media keys support, artist's bio and lyrics"
     },
     "extDefaultTitle": {
-        "message": "VK Blue - EQ & Scrobbler for VK.com"
+        "message": "VK Blue - EQ & Scrobbler for VK.ru"
     },
     "creator_code_name": {
         "message": "Ivan Hadaev",
         "description": "Name of the creator"
     },
     "creator_code_link": {
-        "message": "https://vk.com/hadaev_ivan",
+        "message": "https://vk.ru/hadaev_ivan",
         "description": "Link to creator's page"
     },
 
@@ -22,7 +22,7 @@
         "description": "Name of the creator"
     },
     "creator_design_link": {
-        "message": "https://vk.com/timothyk",
+        "message": "https://vk.ru/timothyk",
         "description": "Link to creator's page"
     },
     "creator_media_name": {
@@ -30,7 +30,7 @@
         "description": "Name of the designer"
     },
     "creator_media_link": {
-        "message": "https://vk.com/id30587638",
+        "message": "https://vk.ru/id30587638",
         "description": "Link to designer's page"
     },
     "elements_design_name": {
@@ -38,7 +38,7 @@
         "description": "Name of the designer"
     },
     "elements_design_link": {
-        "message": "https://vk.com/id17100076",
+        "message": "https://vk.ru/id17100076",
         "description": "Link to designer's page"
     }
 }

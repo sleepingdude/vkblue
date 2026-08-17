@@ -4,6 +4,7 @@ import { FFT_SIZE, reduce } from './reduce';
 let audioContext: AudioContext;
 
 let mediaElementSource: MediaElementAudioSourceNode;
+const mediaElementSourceCache = new WeakMap<HTMLAudioElement, MediaElementAudioSourceNode>();
 let mainInputNode: GainNode;
 
 let firstBiquadFilter: BiquadFilterNode;
@@ -54,6 +55,7 @@ let currentPitchSettings: PitchSettings = {
     speedFine: 0,
     preservePitch: true,
 };
+
 
 export const analyserListeners: ((buffer: Float32Array) => Float32Array)[] = [];
 
@@ -547,11 +549,17 @@ export const updateAudio = (audio: HTMLAudioElement) => {
 
     if (!audioContext) return;
 
+    if (mediaElementSource && (mediaElementSource as any).mediaElement === audio) {
+        return;
+    }
+
     if (mediaElementSource) {
-        mediaElementSource.mediaElement.removeEventListener('playing', handlePlaying);
-        mediaElementSource.mediaElement.removeEventListener('emptied', handleEmptied);
-        mediaElementSource.mediaElement.removeEventListener('ratechange', handleRateChange);
-        mediaElementSource.mediaElement.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        try {
+            mediaElementSource.mediaElement.removeEventListener('playing', handlePlaying);
+            mediaElementSource.mediaElement.removeEventListener('emptied', handleEmptied);
+            mediaElementSource.mediaElement.removeEventListener('ratechange', handleRateChange);
+            mediaElementSource.mediaElement.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        } catch {}
 
         try {
             mediaElementSource.disconnect();
@@ -560,13 +568,19 @@ export const updateAudio = (audio: HTMLAudioElement) => {
 
     mediaIsConnected = false;
 
-    try {
-        mediaElementSource = audioContext.createMediaElementSource(audio);
-    } catch (e) {
-        console.error('EQUALIZER_GET_SOURCE_FAILED', e);
-        return;
+    let source = mediaElementSourceCache.get(audio);
+    
+    if (!source) {
+        try {
+            source = audioContext.createMediaElementSource(audio);
+            mediaElementSourceCache.set(audio, source);
+        } catch (e) {
+            console.error('EQUALIZER_GET_SOURCE_FAILED', e);
+            return;
+        }
     }
 
+    mediaElementSource = source;
     mediaElementSource.connect(mainInputNode);
     mediaIsConnected = true;
 
